@@ -1,11 +1,13 @@
-use std::{fs::File, io::Read, sync::Arc};
+use std::{fs::File, io::Read, sync::Arc, time::Instant};
 
+use url::Url;
 use clap::{App, Arg, ArgMatches};
-use regex::Regex;
 use reqwest::blocking::get;
 use scraper::{Html, Selector};
 
 fn main() {
+    let now: Instant = Instant::now();
+
     let matches = App::new("Krista's command line html and css scraper")
         .version("0.1.0")
         .author("https://github.com/krista-chan")
@@ -43,6 +45,8 @@ fn main() {
         .get_matches();
 
     parse(matches);
+
+    println!("{}", Instant::now().duration_since(now).as_nanos())
 }
 
 fn parse(matches: ArgMatches) {
@@ -50,10 +54,7 @@ fn parse(matches: ArgMatches) {
     let html = matches.value_of("html");
     let is_json = matches.is_present("json");
 
-    let uri_regex =
-        Regex::new(r"^(([^:/?#]+):)(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?").unwrap();
-
-    if uri_regex.is_match(html.unwrap()) {
+    if Url::parse(html.unwrap()).is_ok() {
         let selector = Selector::parse(selector.unwrap()).expect("Invalid syntax");
 
         log_html(
