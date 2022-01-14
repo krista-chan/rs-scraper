@@ -932,7 +932,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "scraper"
+name = "scrape"
 version = "0.1.0"
 dependencies = [
  "clap",
