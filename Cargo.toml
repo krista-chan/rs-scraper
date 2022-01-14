@@ -1,5 +1,5 @@
 [package]
-name = "scraper"
+name = "scrape"
 version = "0.1.0"
 authors = ["krista-chan <qbotdev84@gmail.com>"]
 edition = "2018"
